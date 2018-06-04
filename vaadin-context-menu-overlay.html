@@ -50,7 +50,8 @@ This program is available under Apache License Version 2.0, available at https:/
       is: 'vaadin-context-menu-overlay',
 
       observers: [
-        '_positionChanged(x, y)', '_phoneChanged(phone)'
+        '_positionChanged(x, y)'
+        // '_phoneChanged(phone)'
       ],
 
       properties: {
@@ -80,11 +81,27 @@ This program is available under Apache License Version 2.0, available at https:/
         }
       },
 
-      _phoneChanged: function(phone) {
-        if (!phone) {
-          this.backdropElement.style.opacity = 0;
+      listeners: {
+        'iron-overlay-opened': '_onOverlayOpened',
+        'iron-overlay-closed': '_onOverlayClosed',
+      },
+
+      _onOverlayOpened: function() {
+        if(!this.phone) {
+           this.backdropElement.style.opacity = 0;
         }
       },
+      _onOverlayClosed: function() {
+        if(!this.phone) {
+           this.backdropElement.style.opacity = '';
+        }
+      },
+
+      // _phoneChanged: function(phone) {
+      //   if (!phone) {
+      //     this.backdropElement.style.opacity = 0;
+      //   }
+      // },
 
       // monkey patching iron-overlay-behavior to cancel overriding transform styles.
       _preparePositioning: function() {
